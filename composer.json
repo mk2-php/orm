@@ -1,0 +1,18 @@
+{
+	"name":"mk2/orm",
+	"description": "Next PHP Framework 'Mark2' OR-Mapping.",
+	"type": "library",
+	"license": "MIT",
+	"authors": [{
+		"name": "Nakajima Satoru"
+	}],
+	"keywords": ["PHP","Framework","mark2"],
+	"require": {
+		"php": ">=5.4.0"
+	},
+	"autoload": {
+		"psr-4": {
+			"Mk2\\Orm\\":"src/"
+		}
+	}
+}
