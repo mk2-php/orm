@@ -90,11 +90,12 @@ class Orm{
 
     public function tableExists(){
 
-        $this->connectStart();
-
-        $tablename=$this->context->prefix.$this->context->table;
-
         try{
+
+            $this->connectStart();
+
+            $tablename=$this->context->prefix.$this->context->table;
+
             $sql="SELECT 1 FROM ".$tablename." LIMIT 1;";
             $res=$this->_pdo->query($sql);
 
