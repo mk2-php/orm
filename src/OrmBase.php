@@ -6,6 +6,7 @@ use Exception;
 
 class OrmBase{
 
+    protected const DELETE_FLG="delete_flg";
     protected $context=null;
 
     public function __construct(&$context){

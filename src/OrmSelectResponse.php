@@ -44,6 +44,10 @@ class OrmSelectResponse{
 		return $this->sql;
 	}
 
+	public function toBindSql(){
+		return $this->bindSql;
+	}
+
 	public function toPaginate(){
 		return $this->paging;
 	}

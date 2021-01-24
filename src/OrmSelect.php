@@ -147,7 +147,7 @@ class OrmSelect extends OrmBase{
         return $this;
     }
 
-    public function whereOR($field,$operand,$value){
+    public function whereOr($field,$operand,$value){
 
         $this->_addCommand([
             "command"=>"where",
@@ -211,6 +211,17 @@ class OrmSelect extends OrmBase{
         return $this;
     }
 
+    public function innerjoin(...$argv){
+
+        $this->_addCommand([
+            "command"=>"join",
+            "argv"=>$argv,
+        ]);
+
+        return $this;
+
+    }
+
     public function leftJoin(...$argv){
 
         $this->_addCommand([
@@ -219,6 +230,17 @@ class OrmSelect extends OrmBase{
         ]);
 
         return $this;
+    }
+    
+    public function outerLeftJoin(...$argv){
+
+        $this->_addCommand([
+            "command"=>"leftJoin",
+            "argv"=>$argv,
+        ]);
+
+        return $this;
+
     }
 
     public function rightJoin(...$argv){
@@ -231,34 +253,15 @@ class OrmSelect extends OrmBase{
         return $this;
     }
 
-    public function brige(...$argv){
+    public function outerRightJoin(...$argv){
 
         $this->_addCommand([
-            "command"=>"brige",
+            "command"=>"rightJoin",
             "argv"=>$argv,
         ]);
 
         return $this;
-    }
-
-    public function leftBrige(...$argv){
-
-        $this->_addCommand([
-            "command"=>"leftBrige",
-            "argv"=>$argv,
-        ]);
-
-        return $this;
-    }
-
-    public function rightBrige(...$argv){
-
-        $this->_addCommand([
-            "command"=>"rightBrige",
-            "argv"=>$argv,
-        ]);
-
-        return $this;
+        
     }
 
     public function limit($limit,$offset=0){
@@ -288,15 +291,20 @@ class OrmSelect extends OrmBase{
         return $this;
     }
 
-    public function deleteFlgAlso($enable){
-        $this->deleteFlgAlso=$enable;
+    public function deleteFlgAlso(){
+        $this->deleteFlgAlso=true;
         return $this;
     }
 
-    public function deleteFlgOnly($enable){
-        $this->deleteFlgAlso=$enable;
-        $this->deleteFlgOnly=$enable;
+    public function deleteFlgOn(){
+        $this->deleteFlgAlso=true;
+        $this->deleteFlgOnly=true;
         return $this;
+    }
+    public function deleteFlgOff(){
+        $this->deleteFlgAlso=false;
+        $this->deleteFlgOnly=false;
+        return $this;        
     }
     public function continue($enable){
         $this->continue=$enable;
@@ -314,7 +322,7 @@ class OrmSelect extends OrmBase{
             if(!empty($this->context->logicalDelete)){
                 $logicalDelete=$this->context->logicalDelete;
 
-                $logicalDeleteField="del_flg";
+                $logicalDeleteField=self::DELETE_FLG;
                 if(!empty($this->context->logicalDelete["field"])){
                     $logicalDeleteField=$this->context->logicalDelete["field"];
                 }
@@ -340,7 +348,7 @@ class OrmSelect extends OrmBase{
             if(!empty($this->context->logicalDelete)){
                 $logicalDelete=$this->context->logicalDelete;
 
-                $logicalDeleteField="del_flg";
+                $logicalDeleteField=self::DELETE_FLG;
                 if(!empty($this->context->logicalDelete["field"])){
                     $logicalDeleteField=$this->context->logicalDelete["field"];
                 }

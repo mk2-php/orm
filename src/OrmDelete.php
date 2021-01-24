@@ -128,7 +128,7 @@ class OrmDelete extends OrmBase{
         $wheres=OrmSqlBuild::convertWhere($opt);
         if(!empty($this->context->logicalDelete)){
 
-            $logicalDeleteField="del_flg";
+            $logicalDeleteField=self::DELETE_FLG;
             if(!empty($this->context->logicalDelete["field"])){
                 $logicalDeleteField=$this->context->logicalDelete["field"];
             }
@@ -200,7 +200,7 @@ class OrmDelete extends OrmBase{
             return;
         }
 
-        $logicalDeleteField="del_flg";
+        $logicalDeleteField=self::DELETE_FLG;
         if(!empty($this->context->logicalDelete["field"])){
             $logicalDeleteField=$this->context->logicalDelete["field"];
         }
@@ -254,7 +254,7 @@ class OrmDelete extends OrmBase{
             $suId=$surrogateKey["field"];
         }
 
-        $logicalDeleteField="del_flg";
+        $logicalDeleteField=self::DELETE_FLG;
         if(!empty($this->context->logicalDelete["field"])){
             $logicalDeleteField=$this->context->logicalDelete["field"];
         }

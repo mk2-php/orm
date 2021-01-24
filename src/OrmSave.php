@@ -80,7 +80,7 @@ class OrmSave extends OrmBase{
         $data=$this->_setUpdateColum($data);
 
         if(!empty($this->context->logicalDelete)){
-            $logicalDeleteField="del_flg";
+            $logicalDeleteField=self::DELETE_FLG;
             if(!empty($this->context->logicalDelete["field"])){
                 $logicalDeleteField=$this->context->logicalDelete["field"];
             }

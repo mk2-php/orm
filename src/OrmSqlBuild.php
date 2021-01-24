@@ -4,8 +4,6 @@ namespace Mk2\Orm;
 
 class OrmSqlBuild{
 
-    private static $brigeTableName=null;
-
     public static function convertField($option){
 
         $sql="";
@@ -34,8 +32,6 @@ class OrmSqlBuild{
 
     public static function convertTables($context,$option){
 
-        self::$brigeTableName=null;
-
         $sql=$context->prefix.$context->table;
 
         if(is_array($option)){
@@ -49,15 +45,6 @@ class OrmSqlBuild{
                 else if($o_["command"]=="rightJoin"){
                     $sql.=self::convertJoin("right",$o_["argv"],$context); 
                 }
-                else if($o_["command"]=="brige"){
-                    $sql.=self::convertJoin("inner",$o_["argv"],$context,true);
-                }
-                else if($o_["command"]=="leftBrige"){
-                    $sql.=self::convertJoin("left",$o_["argv"],$context,true); 
-                }
-                else if($o_["command"]=="rightBrige"){
-                    $sql.=self::convertJoin("right",$o_["argv"],$context,true); 
-                }
 
             }
         }
@@ -65,7 +52,7 @@ class OrmSqlBuild{
         return $sql;
     }
 
-    private static function convertJoin($joinType,$option,$context,$brige=false){
+    private static function convertJoin($joinType,$option,$context){
 
         if($joinType=="inner"){
             $joinName=" INNER JOIN ";
@@ -83,12 +70,7 @@ class OrmSqlBuild{
 
             if(!empty($context->surrogateKey['enable']) && !empty($context->surrogateKey['field'])){
 
-                if(self::$brigeTableName){
-                    $onString=$tableName.'.'.$context->surrogateKey['field'].' = '.self::$brigeTableName.'.'.$tableName.'_'.$context->surrogateKey['field'];
-                }
-                else{
-                    $onString=$tableName.'.'.$context->prefix.$context->table.'_'.$context->surrogateKey['field'].' = '.$context->prefix.$context->table.'.'.$context->surrogateKey['field'];
-                }
+                $onString=$tableName.'.'.$context->prefix.$context->table.'_'.$context->surrogateKey['field'].' = '.$context->prefix.$context->table.'.'.$context->surrogateKey['field'];
                 $sql=$joinName.$tableName." ON ".$onString;  
 
             }
@@ -125,10 +107,6 @@ class OrmSqlBuild{
             $sql=$joinName.$tableName." ".$option[1]." ON ".$onString;
         }
 
-        if($brige){
-            self::$brigeTableName=$tableName;
-        }
-
         return $sql;
     }
 
@@ -150,7 +128,11 @@ class OrmSqlBuild{
                 if($o_["command"]==$type){
 
                     if($ind){
-                        $sql.=" AND ";
+                        $operand="AND";
+                        if(!empty($o_["conditions"])){
+                            $operand=$o_["conditions"];
+                        }
+                        $sql.=" ".$operand." ";
                     }
 
                     $field=$o_["field"];
@@ -180,7 +162,7 @@ class OrmSqlBuild{
                                         $v_="NULL";
                                     }    
                                 }
-                                $buffer.=$v_;
+                                $buffer.="'".$v_."'";
                                 $ind++;
                             }
                             $buffer.=")";
