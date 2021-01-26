@@ -133,11 +133,16 @@ class Orm{
 
     }
 
-    public function save($option=null){
+    public function save($option=null,$responsed=false,$changeOnlyRewrite=false){
         
         $this->connectStart();
 
         $obj=new OrmSave($this);
+
+        if($option){
+            return $obj->auto($option,$responsed,$changeOnlyRewrite);
+        }
+
         return $obj;
         
     }

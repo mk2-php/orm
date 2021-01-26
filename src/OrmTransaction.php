@@ -18,16 +18,19 @@ class OrmTransaction extends OrmBase{
         $this->query('ROLLBACK');
     }
 
-    public function section($callback){
+    public function section($callback,$forceCommit=false){
 
         $this->begin();
 
         try{
 
-            $response=$callback();
+            $response=$callback($this);
 
         }catch(Exception $e){
-            $this->rollback();
+            if(!$forceCommit){
+                $this->rollback();
+                throw new Exception($e);
+            }
         }
 
         $this->commit();

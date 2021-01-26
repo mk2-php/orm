@@ -6,6 +6,8 @@ class OrmSelectResponse{
 
 	protected $sql=null;
 	protected $bindSql;
+	protected $saveSql;
+	protected $deleteSql;
 	protected $item;
 	protected $paging;
 
@@ -24,6 +26,10 @@ class OrmSelectResponse{
 			"page"=>$page,
 		];
 
+	}
+
+	public function setSaveSql($sql){
+		$this->saveSql=$sql;
 	}
 
 	public function row(){
@@ -46,6 +52,10 @@ class OrmSelectResponse{
 
 	public function toBindSql(){
 		return $this->bindSql;
+	}
+
+	public function toSaveSql(){
+		return $this->saveSql;
 	}
 
 	public function toPaginate(){

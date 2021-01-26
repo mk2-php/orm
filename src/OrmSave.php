@@ -36,6 +36,26 @@ class OrmSave extends OrmBase{
         return $this;
     }
 
+    public function auto($data,$responsed=false,$changeOnlyRewrite=false){
+
+        if(!empty($this->context->surrogateKey["enable"])){
+            
+            $surrogateKey=$this->context->surrogateKey;
+
+            $suId="id";
+            if(!empty($surrogateKey["field"])){
+                $suId=$surrogateKey["field"];
+            }
+
+            if(!empty($data[$suId])){
+                return $this->update($data,$responsed,$changeOnlyRewrite);
+            }
+        }
+
+        return $this->insert($data,$responsed);
+        
+    }
+
     public function insert($data=null,$insertResponsed=false){
 
         list($sql,$data)=$this->_insertSql($data,$insertResponsed);
@@ -60,6 +80,8 @@ class OrmSave extends OrmBase{
                     ->where($suId,"=",$insertId->row())
                     ->first()
                 ;
+
+                $getInsertData->setSaveSql($sql);
 
                 return $getInsertData;
             }
@@ -142,6 +164,8 @@ class OrmSave extends OrmBase{
                     ->where($suId,"=",$updateKeyValue)
                     ->first()
                 ;
+
+                $getUpdateData->setSaveSql($sql);
 
                 return $getUpdateData;
             }
