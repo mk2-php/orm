@@ -224,4 +224,15 @@ class Orm{
         $this->associated['belongsTo'][$name]=$object;
 
     }
+
+    public function getCallback($name,$request=null){
+        if(method_exists($this->context,$name)){
+            if($request){
+                return $this->context->{$name}(...$request);
+            }
+            else{
+                return $this->context->{$name}();
+            }
+        }
+    }
 }

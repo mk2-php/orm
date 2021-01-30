@@ -4,6 +4,9 @@ namespace Mk2\Orm;
 
 class OrmSave extends OrmBase{
 
+    private const MODE_INSERT=0;
+    private const MODE_UPDATE=1;
+
     public function values($data){
 
         if(empty($this->params["option"])){
@@ -58,10 +61,21 @@ class OrmSave extends OrmBase{
 
     public function insert($data=null,$insertResponsed=false){
 
+        $data2=$this->context->getCallback("saveBefore",[self::MODE_INSERT,$data]);
+        if($data2){
+            $data=$data2;
+        }
+
+        $data2=$this->context->getCallback("insertBefore",[$data]);
+        if($data2){
+            $data=$data2;
+        }
+
         list($sql,$data)=$this->_insertSql($data,$insertResponsed);
 
         $this->query($sql);
 
+        $response=true;
         if($insertResponsed){
 
             if(!empty($this->context->surrogateKey["enable"])){
@@ -76,18 +90,20 @@ class OrmSave extends OrmBase{
                 $selectObj=new OrmSelect($this->context);
                 $insertId=$selectObj->max($suId);
 
-                $getInsertData=$selectObj
+                $response=$selectObj
                     ->where($suId,"=",$insertId->row())
                     ->first()
                 ;
 
-                $getInsertData->setSaveSql($sql);
-
-                return $getInsertData;
+                $response->setSaveSql($sql);
             }
         }
+    
+        $this->context->getCallback("saveAfter",[self::MODE_INSERT,$response]);
 
-        return true;
+        $this->context->getCallback("insertAfter",[$response]);
+        
+        return $response;
     }
 
     public function insertSql($data){
@@ -143,10 +159,21 @@ class OrmSave extends OrmBase{
 
     public function update($data=null,$updateResponsed=false,$changeOnlyRewrite=false){
 
+        $data2=$this->context->getCallback("saveBefore",[self::MODE_UPDATE,$data]);
+        if($data2){
+            $data=$data2;
+        }
+
+        $data2=$this->context->getCallback("updateBefore",[$data]);
+        if($data2){
+            $data=$data2;
+        }
+
         list($sql,$updateKeyValue,$data)=$this->_updateSql($data,$updateResponsed,$changeOnlyRewrite);
 
         $this->query($sql);
 
+        $reponse=true;
         if($updateResponsed){
 
             if(!empty($this->context->surrogateKey["enable"])){
@@ -160,18 +187,21 @@ class OrmSave extends OrmBase{
 
                 $selectObj=new OrmSelect($this->context);
 
-                $getUpdateData=$selectObj
+                $reponse=$selectObj
                     ->where($suId,"=",$updateKeyValue)
                     ->first()
                 ;
 
-                $getUpdateData->setSaveSql($sql);
+                $reponse->setSaveSql($sql);
 
-                return $getUpdateData;
             }
         }
+    
+        $this->context->getCallback("saveAfter",[self::MODE_UPDATE,$response]);
 
-        return true;
+        $this->context->getCallback("updateAfter",[$response]);
+        
+        return $reponse;
     }
 
     public function updateSql($data=null,$changeOnlyRewrite=false){

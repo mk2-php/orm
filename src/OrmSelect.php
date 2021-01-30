@@ -317,6 +317,8 @@ class OrmSelect extends OrmBase{
      */
     public function get($type=self::OUTPUT_ALL){
 
+        $this->context->getCallback("selectBefore",[$this]);
+
         if(!$this->deleteFlgAlso){
         
             if(!empty($this->context->logicalDelete)){
@@ -443,6 +445,11 @@ class OrmSelect extends OrmBase{
             else if($type==self::OUTPUT_COUNT){
                 $output=$row->count;
             }
+        }
+
+        $output2=$this->context->getCallback("selectAfter",[$type,$output]);
+        if($output2){
+            $output=$output2;
         }
 
         $response=new OrmSelectResponse([

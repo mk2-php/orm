@@ -48,6 +48,8 @@ class OrmDelete extends OrmBase{
 
     public function delete($deleteResponsed=false){
 
+        $this->context->getCallback("deleteBefore");
+
         list($sql,$deleteKeyValue)=$this->_sql($deleteResponsed);
 
         if($deleteResponsed){
@@ -191,7 +193,9 @@ class OrmDelete extends OrmBase{
      * @param bool $responsed
      */
     public function revert($Responsed=false){
-
+    	
+        $this->context->getCallback("revertBefore");
+        
         if(empty($this->context->surrogateKey["enable"])){
             return;
         }
@@ -238,6 +242,8 @@ class OrmDelete extends OrmBase{
     }
 
     public function physicalDelete($Responsed=false){
+    	
+        $this->context->getCallback("physicalDeleteBefore");
 
         if(empty($this->context->surrogateKey["enable"])){
             return;
