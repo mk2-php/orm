@@ -20,6 +20,10 @@ class OrmSelect extends OrmBase{
     protected $deleteFlgOnly=false;
     protected $continue=false;
 
+    /**
+     * select
+     * @param $option
+     */
     public function select($option){
 
         $option=(array)$option;
@@ -134,7 +138,14 @@ class OrmSelect extends OrmBase{
 
     }
 
-    public function where($field,$operand,$value,$conditions=null){
+    /**
+     * where
+     * @param $field
+     * @param $operand
+     * @param $value
+     * @param $conditions = null
+     */
+    public function where($field,$operand,$value,$conditions = null){
 
         $this->_addCommand([
             "command"=>"where",
@@ -147,6 +158,12 @@ class OrmSelect extends OrmBase{
         return $this;
     }
 
+    /**
+     * whereOr
+     * @param $field
+     * @param $operand
+     * @param $value
+     */
     public function whereOr($field,$operand,$value){
 
         $this->_addCommand([
@@ -159,7 +176,14 @@ class OrmSelect extends OrmBase{
 
         return $this;
     }
-    
+
+    /**
+     * having
+     * @param $field
+     * @param $operand
+     * @param $value
+     * @param $conditions = null
+     */
     public function having($field,$operand,$value,$conditions=null){
 
         $this->_addCommand([
@@ -173,6 +197,12 @@ class OrmSelect extends OrmBase{
         return $this;
     }
 
+    /**
+     * havingOR
+     * @param $field
+     * @param $operand
+     * @param $value
+     */
     public function havingOR($field,$operand,$value){
 
         $this->_addCommand([
@@ -187,6 +217,10 @@ class OrmSelect extends OrmBase{
 
     }
 
+    /**
+     * fields
+     * @param $fields
+     */
     public function fields($fields){
 
         if(is_string($fields)){
@@ -201,6 +235,10 @@ class OrmSelect extends OrmBase{
         return $this;
     }
 
+    /**
+     * join
+     * @param $argv
+     */
     public function join(...$argv){
 
         $this->_addCommand([
@@ -211,6 +249,10 @@ class OrmSelect extends OrmBase{
         return $this;
     }
 
+    /**
+     * innerjoin
+     * @param $argv
+     */
     public function innerjoin(...$argv){
 
         $this->_addCommand([
@@ -222,6 +264,10 @@ class OrmSelect extends OrmBase{
 
     }
 
+    /**
+     * leftJoin
+     * @param $argv
+     */
     public function leftJoin(...$argv){
 
         $this->_addCommand([
@@ -231,7 +277,11 @@ class OrmSelect extends OrmBase{
 
         return $this;
     }
-    
+
+    /**
+     * outerLeftJoin
+     * @param $argv
+     */
     public function outerLeftJoin(...$argv){
 
         $this->_addCommand([
@@ -243,6 +293,10 @@ class OrmSelect extends OrmBase{
 
     }
 
+    /**
+     * rightJoin
+     * @param $argv
+     */
     public function rightJoin(...$argv){
 
         $this->_addCommand([
@@ -253,6 +307,10 @@ class OrmSelect extends OrmBase{
         return $this;
     }
 
+    /**
+     * outerRightJoin
+     * @param $argv
+     */
     public function outerRightJoin(...$argv){
 
         $this->_addCommand([
@@ -264,6 +322,11 @@ class OrmSelect extends OrmBase{
         
     }
 
+    /**
+     * limit
+     * @param $limit
+     * @param $offset = 0
+     */
     public function limit($limit,$offset=0){
 
         $this->_addCommand([
@@ -275,11 +338,21 @@ class OrmSelect extends OrmBase{
         return $this;
     }
 
+    /**
+     * paging
+     * @param $limit
+     * @param $page = 1
+     */
     public function paging($limit,$page=1){
         $offset=($page-1)*$limit;
         return $this->limit($limit,$offset);
     }
 
+    /**
+     * orderBy
+     * @param $fieldName
+     * @param $sort
+     */
     public function orderBy($fieldName,$sort){
 
         $this->_addCommand([
@@ -291,21 +364,36 @@ class OrmSelect extends OrmBase{
         return $this;
     }
 
+    /**
+     * deleteFlgAlso
+     */
     public function deleteFlgAlso(){
         $this->deleteFlgAlso=true;
         return $this;
     }
 
+    /**
+     * deleteFlgOn
+     */
     public function deleteFlgOn(){
         $this->deleteFlgAlso=true;
         $this->deleteFlgOnly=true;
         return $this;
     }
+
+    /**
+     * deleteFlgOn
+     */
     public function deleteFlgOff(){
         $this->deleteFlgAlso=false;
         $this->deleteFlgOnly=false;
         return $this;        
     }
+
+    /**
+     * continue
+     * @param $enable
+     */
     public function continue($enable){
         $this->continue=$enable;
         return $this;
@@ -453,6 +541,7 @@ class OrmSelect extends OrmBase{
         }
 
         $response=new OrmSelectResponse([
+            "type"=>$type,
             "item"=>$output,
             "sql"=>$sql,
         ]);
@@ -471,14 +560,25 @@ class OrmSelect extends OrmBase{
 
         return $response;
     }
+
+    /**
+     * all
+     */
     public function all(){
         return $this->get();
     }
 
+    /**
+     * first
+     */
     public function first(){
         return $this->get(self::OUTPUT_FIRST);
     }
 
+    /**
+     * one
+     * @param $fieldName
+     */
     public function one($fieldName){
         if(!empty($this->params["option"])){
             foreach($this->params["option"] as $ind=>$p_){
@@ -493,26 +593,51 @@ class OrmSelect extends OrmBase{
         ;
     }
 
+    /**
+     * value
+     * @param $fieldName
+     */
     public function value($fieldName){
         return $this->one($fieldName);
     }
     
+    /**
+     * max
+     * @param $fieldName
+     */
     public function max($fieldName){
         return $this->one('MAX('.$fieldName.')');
     }
 
+    /**
+     * min
+     * @param $fieldName
+     */
     public function min($fieldName){
         return $this->one('MIN('.$fieldName.')');
     }
 
+    /**
+     * sum
+     * @param $fieldName
+     */
     public function sum($fieldName){
         return $this->one('SUM('.$fieldName.')');
     }
 
+    /**
+     * avg
+     * @param $fieldName
+     */
     public function avg($fieldName){
         return $this->one('AVG('.$fieldName.')');
     }
 
+    /**
+     * lists
+     * @param $fieldName
+     * @param $valueName = null
+     */
     public function lists($fieldName,$valueName=null){
         if(!empty($this->params["option"])){
             foreach($this->params["option"] as $ind=>$p_){
@@ -532,14 +657,25 @@ class OrmSelect extends OrmBase{
         return $this->get(self::OUTPUT_LIST);
     }
 
+    /**
+     * count
+     */
     public function count(){
         return $this->get(self::OUTPUT_COUNT);
     }
 
+    /**
+     * sql
+     */
     public function sql(){
         return $this->get(self::OUTPUT_SQL);
     }
-
+    
+    /**
+     * paginate
+     * @param $limit
+     * @param $page
+     */
     public function paginate($limit,$page){
         
         $paramsBuff=$this->params;
@@ -556,6 +692,7 @@ class OrmSelect extends OrmBase{
         $paging->page=$page;
         
         $response=new OrmSelectResponse([
+            "type"=>"paginate",
             "item"=>$buff->row(),
             "sql"=>$buff->toSql(),
             "paging"=>$paging,
@@ -565,6 +702,10 @@ class OrmSelect extends OrmBase{
 
     }
 
+    /**
+     * _addCommand
+     * @param $params
+     */
     private function _addCommand($params){
 
         if(empty($this->params["option"])){
@@ -575,6 +716,11 @@ class OrmSelect extends OrmBase{
 
     }
 
+    /**
+     * _associateHasMany
+     * @param $type
+     * @param $response
+     */
     private function _associateHasMany($type,$response){
 
         if(empty($this->context->associated['hasMany'])){
@@ -654,7 +800,11 @@ class OrmSelect extends OrmBase{
         return $responseOut;
     }
 
-
+    /**
+     * _associateHasOne
+     * @param $type
+     * @param $response
+     */
     private function _associateHasOne($type,$response){
 
         if(empty($this->context->associated['hasOne'])){
@@ -733,6 +883,11 @@ class OrmSelect extends OrmBase{
         return $responseOut;
     }
 
+    /**
+     * _associateBelongsTo
+     * @param $type
+     * @param $response
+     */
     private function _associateBelongsTo($type,$response){
 
         if(empty($this->context->associated['belongsTo'])){

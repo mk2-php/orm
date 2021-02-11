@@ -4,6 +4,7 @@ namespace Mk2\Orm;
 
 class OrmSelectResponse{
 
+	protected $type;
 	protected $sql=null;
 	protected $bindSql;
 	protected $saveSql;
@@ -11,12 +12,23 @@ class OrmSelectResponse{
 	protected $item;
 	protected $paging;
 
+	/**
+     * __construct
+     * @param $input
+     */
 	public function __construct($input){
+				
 		foreach($input as $field=>$value){
 			$this->{$field}=$value;
 		}
 	}
 
+    /**
+     * setPaginate
+     * @param $total
+     * @param $limit
+     * @param $page
+     */
 	public function setPaginate($total,$limit,$page){
 
 		$this->paging=[
@@ -28,6 +40,10 @@ class OrmSelectResponse{
 
 	}
 
+	/**
+     * setSaveSql
+     * @param $sql
+     */
 	public function setSaveSql($sql){
 		$this->saveSql=$sql;
 	}
@@ -43,7 +59,16 @@ class OrmSelectResponse{
 	}
 
 	public function toArray(){
-		return (array)$this->item;
+
+		$result=(array)$this->item;
+
+		if($this->type=="all" || $this->type=="paginate"){
+			foreach($result as $ind=>$r_){
+				$result[$ind]=(array)$r_;
+			}
+		}
+
+		return (array)$result;
 	}
 
 	public function toSql(){

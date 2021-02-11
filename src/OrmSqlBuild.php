@@ -258,20 +258,20 @@ class OrmSqlBuild{
                             $values.=", ";                    
                         }
                         if($value){
-                            $value=self::escape($value);
+                            $value="'".self::escape($value)."'";
                         }
                         else{
                             if($value===0){
                                 $value="0";
                             }
                             else if($value===""){
-                                $value="''";
+                                $value="NULL";
                             }
                             else if($value===null){
-                                $value=null;
+                                $value="null";
                             }
                         }
-                        $values.="'".$value."'";
+                        $values.=$value;
                         $fields.=$field;
                         $ind++;
                     }
@@ -299,20 +299,20 @@ class OrmSqlBuild{
                             $sql.=", ";                 
                         }
                         if($value){
-                            $value=self::escape($value);
+                            $value="'".self::escape($value)."'";
                         }
                         else{
                             if($value===0){
                                 $value="0";
                             }
                             else if($value===""){
-                                $value="''";
+                                $value="NULL";
                             }
                             else if($value===null){
-                                $value=null;
+                                $value="null";
                             }
                         }
-                        $sql.=$field."='".$value."'";
+                        $sql.=$field."=".$value;
                         $ind++;
                     }
                 }
