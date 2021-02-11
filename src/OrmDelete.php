@@ -4,7 +4,10 @@ namespace Mk2\Orm;
 
 class OrmDelete extends OrmBase{
 
-
+    /**
+     * surrogateSelect
+     * @param $ids
+     */
     public function surrogateSelect($ids){
         
         if(!empty($this->context->surrogateKey)){
@@ -28,6 +31,12 @@ class OrmDelete extends OrmBase{
         return $this;
     }
 
+    /**
+     * where
+     * @param $field
+     * @param $operand
+     * @param $value
+     */
     public function where($field,$operand,$value){
 
         if(empty($this->params["option"])){
@@ -46,6 +55,10 @@ class OrmDelete extends OrmBase{
         return $this;
     }
 
+    /**
+     * where
+     * @param boolean $deleteResponsed = false
+     */
     public function delete($deleteResponsed=false){
 
         $this->context->getCallback("deleteBefore");
@@ -103,7 +116,7 @@ class OrmDelete extends OrmBase{
 
                     $getDeletedData=$selectObj
                         ->where($suId,"IN",$deleteKeyValue)
-                        ->deleteFlgOnly(true)
+                        ->deleteFlgOn(true)
                         ->get()
                     ;
                 }
@@ -119,10 +132,19 @@ class OrmDelete extends OrmBase{
     
     }
 
+    /**
+     * sql
+     * @param boolean $deleteResponsed = false
+     */
     public function sql($deleteResponsed=false){
         list($sql,$deleteKeyValue)=$this->_sql($deleteResponsed,false);
         return $sql;
     }
+
+    /**
+     * _sql
+     * @param boolean $deleteResponsed
+     */
     private function _sql($deleteResponsed){
 
         $opt=$this->params["option"];
@@ -190,7 +212,7 @@ class OrmDelete extends OrmBase{
 
     /**
      * revert
-     * @param bool $responsed
+     * @param bool $responsed = false
      */
     public function revert($Responsed=false){
     	
@@ -241,6 +263,10 @@ class OrmDelete extends OrmBase{
 
     }
 
+    /**
+     * physicalDelete
+     * @param bool $Responsed = false
+     */
     public function physicalDelete($Responsed=false){
     	
         $this->context->getCallback("physicalDeleteBefore");

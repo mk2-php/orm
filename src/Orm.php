@@ -33,10 +33,18 @@ class Orm{
         $this->context=$context;
     }
 
+    /**
+     * setConnection
+     * @param $dbConnection
+     */
     public function setConnection($dbConnection){
         $this->connection=$dbConnection;
     }
 
+    /**
+     * getConnection
+     * @param $name = null
+     */
     public function getConnection($name=null){
         if($name){
             if(!empty($this->connection[$name])){
@@ -45,8 +53,10 @@ class Orm{
         }
         return $this->connection;
     }
-
     
+    /**
+     * connectStart
+     */
     public function connectStart(){
 
         if(empty($this->_pdo)){
@@ -68,14 +78,23 @@ class Orm{
         return true;
     }
 
+    /**
+     * sqlLog
+     */
     public function sqlLog(){
         return OrmLog::get();
     }
 
+    /**
+     * getPdo
+     */
     public function getPdo(){
         return $this->_pdo;
     }
 
+    /**
+     * connectCheck
+     */
     public function connectCheck(){
 
         try{
@@ -88,6 +107,9 @@ class Orm{
         }
     }
 
+    /**
+     * tableExists
+     */
     public function tableExists(){
 
         try{
@@ -105,12 +127,20 @@ class Orm{
         }
     }
 
+    /**
+     * query
+     * @param $sql
+     */
     public function query($sql){
 
         $obj=new OrmBase($this);
         return $obj->query($sql);
     }
 
+    /**
+     * select
+     * @param $option = null
+     */
     public function select($option=null){
 
         $this->connectStart();
@@ -123,7 +153,11 @@ class Orm{
 
         return $obj;
     }
-    
+
+    /**
+     * show
+     * @param $option = null
+     */
     public function show($option=null){
         
         $this->connectStart();
@@ -133,6 +167,12 @@ class Orm{
 
     }
 
+    /**
+     * save
+     * @param $option = null
+     * @param boolean $responsed = false
+     * @param boolean $changeOnlyRewrite = false
+     */
     public function save($option=null,$responsed=false,$changeOnlyRewrite=false){
         
         $this->connectStart();
@@ -143,37 +183,57 @@ class Orm{
             return $obj->auto($option,$responsed,$changeOnlyRewrite);
         }
 
-        return $obj;
-        
+        return $obj;        
     }
 
-    public function insert($option=null){
+    /**
+     * insert
+     * @param $params
+     * @param boolean $insertResponsed = false
+     */
+    public function insert($params=null,$insertResponsed=false){
         
         $this->connectStart();
 
         $obj=new OrmSave($this);
-        return $obj->insert($option);
-        
+        return $obj->insert($params,$insertResponsed);
     }
 
-    public function update($option=null){
-        
+    /**
+     * update
+     * @param $params
+     * @param boolean $updateResponsed = false
+     * @param boolean $changeOnlyRewrite = false
+     */
+    public function update($params,$updateResponsed=false,$changeOnlyRewrite=false){
         $this->connectStart();
 
         $obj=new OrmSave($this);
-        return $obj->update($option);
-        
+        return $obj->update($params,$updateResponsed,$changeOnlyRewrite);
     }
 
-    public function delete($option=null){
+    /**
+     * delete
+     * @param $params
+     * @param $deleteResponsed = false
+     */
+    public function delete($params,$deleteResponsed=false){
         
         $this->connectStart();
 
         $obj=new OrmDelete($this);
-        return $obj;
-        
+
+        if($params){
+            return $obj->surrogateSelect($params)->delete($deleteResponsed);
+        }
+
+        return $obj;        
     }
 
+    /**
+     * transaction
+     * @param $params = null
+     */
     public function transaction($params=null){
 
         $this->connectStart();
@@ -187,15 +247,23 @@ class Orm{
         return $obj;
     }
 
+    /**
+     * migration
+     * @param $option = null
+     */
     public function migration($option=null){
         
         $this->connectStart();
         
         $obj=new OrmMigration($this);
         return $obj;
-
     }
 
+    /**
+     * hasMany
+     * @param $name
+     * @param $option = null
+     */
     public function hasMany($name,$object=null){
 
         if(empty($this->associated['hasMany'])){
@@ -206,6 +274,11 @@ class Orm{
 
     }
 
+    /**
+     * hasOne
+     * @param $name
+     * @param $option = null
+     */
     public function hasOne($name,$object=null){
 
         if(empty($this->associated['hasOne'])){
@@ -215,6 +288,12 @@ class Orm{
         $this->associated['hasOne'][$name]=$object;
 
     }
+
+    /**
+     * belongsTo
+     * @param $name
+     * @param $option = null
+     */
     public function belongsTo($name,$object=null){
 
         if(empty($this->associated['belongsTo'])){
@@ -225,6 +304,11 @@ class Orm{
 
     }
 
+    /**
+     * getCallback
+     * @param $name
+     * @param $request = null
+     */
     public function getCallback($name,$request=null){
         if(method_exists($this->context,$name)){
             if($request){
