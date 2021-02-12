@@ -294,7 +294,7 @@ class OrmDelete extends OrmBase{
         $select=new OrmSelect($this->context);
 
         $getDeleteList=$select
-            ->deleteFlgOnly(true)
+            ->deleteFlgOn(true)
             ->lists($suId)
             ->row()
         ;
