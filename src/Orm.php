@@ -33,18 +33,10 @@ class Orm{
         $this->context=$context;
     }
 
-    /**
-     * setConnection
-     * @param $dbConnection
-     */
     public function setConnection($dbConnection){
         $this->connection=$dbConnection;
     }
 
-    /**
-     * getConnection
-     * @param $name = null
-     */
     public function getConnection($name=null){
         if($name){
             if(!empty($this->connection[$name])){
@@ -53,10 +45,8 @@ class Orm{
         }
         return $this->connection;
     }
+
     
-    /**
-     * connectStart
-     */
     public function connectStart(){
 
         if(empty($this->_pdo)){
@@ -78,23 +68,14 @@ class Orm{
         return true;
     }
 
-    /**
-     * sqlLog
-     */
     public function sqlLog(){
         return OrmLog::get();
     }
 
-    /**
-     * getPdo
-     */
     public function getPdo(){
         return $this->_pdo;
     }
 
-    /**
-     * connectCheck
-     */
     public function connectCheck(){
 
         try{
@@ -107,9 +88,6 @@ class Orm{
         }
     }
 
-    /**
-     * tableExists
-     */
     public function tableExists(){
 
         try{
@@ -127,20 +105,12 @@ class Orm{
         }
     }
 
-    /**
-     * query
-     * @param $sql
-     */
     public function query($sql){
 
         $obj=new OrmBase($this);
         return $obj->query($sql);
     }
 
-    /**
-     * select
-     * @param $option = null
-     */
     public function select($option=null){
 
         $this->connectStart();
@@ -153,11 +123,7 @@ class Orm{
 
         return $obj;
     }
-
-    /**
-     * show
-     * @param $option = null
-     */
+    
     public function show($option=null){
         
         $this->connectStart();
@@ -259,11 +225,6 @@ class Orm{
         return $obj;
     }
 
-    /**
-     * hasMany
-     * @param $name
-     * @param $option = null
-     */
     public function hasMany($name,$object=null){
 
         if(empty($this->associated['hasMany'])){
@@ -274,11 +235,6 @@ class Orm{
 
     }
 
-    /**
-     * hasOne
-     * @param $name
-     * @param $option = null
-     */
     public function hasOne($name,$object=null){
 
         if(empty($this->associated['hasOne'])){
@@ -288,12 +244,6 @@ class Orm{
         $this->associated['hasOne'][$name]=$object;
 
     }
-
-    /**
-     * belongsTo
-     * @param $name
-     * @param $option = null
-     */
     public function belongsTo($name,$object=null){
 
         if(empty($this->associated['belongsTo'])){
@@ -304,11 +254,6 @@ class Orm{
 
     }
 
-    /**
-     * getCallback
-     * @param $name
-     * @param $request = null
-     */
     public function getCallback($name,$request=null){
         if(method_exists($this->context,$name)){
             if($request){
