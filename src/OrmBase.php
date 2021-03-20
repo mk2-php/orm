@@ -32,7 +32,7 @@ class OrmBase{
      * @param $sql
      * @param $bindValues = null
      */
-    public function query($sq, $bindValues=null){
+    public function query($sql, $bindValues=null){
 
         try{
 
