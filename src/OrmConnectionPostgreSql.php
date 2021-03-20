@@ -1,11 +1,26 @@
 <?php
 
+/**
+ * 
+ * Mk2 OR - Mapping(ORM)
+ * 
+ * OrmConnectionPostgreSql Class
+ * 
+ * Copylight : Nakajima Satoru.
+ * 
+ */
+
 namespace Mk2\Orm;
 
 use PDO;
 
 class OrmConnectionPostgreSql{
 
+	/**
+	 * connect
+	 * @param $context
+	 * @param $dbData
+	 */
 	public static function connect($context,$dbData){
 	
 		$database="";

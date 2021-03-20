@@ -1,5 +1,15 @@
 <?php
 
+/**
+ * 
+ * Mk2 OR - Mapping(ORM)
+ * 
+ * OrmDelete Class
+ * 
+ * Copylight : Nakajima Satoru.
+ * 
+ */
+
 namespace Mk2\Orm;
 
 class OrmDelete extends OrmBase{

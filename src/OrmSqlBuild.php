@@ -1,9 +1,23 @@
 <?php
 
+/**
+ * 
+ * Mk2 OR - Mapping(ORM)
+ * 
+ * OrmSqlBuild Class
+ * 
+ * Copylight : Nakajima Satoru.
+ * 
+ */
+
 namespace Mk2\Orm;
 
 class OrmSqlBuild{
 
+    /**
+     * convertField
+     * @param $option
+     */
     public static function convertField($option){
 
         $sql="";
@@ -30,6 +44,11 @@ class OrmSqlBuild{
 
     }
 
+    /**
+     * convertTables
+     * @param $context
+     * @param $option
+     */
     public static function convertTables($context,$option){
 
         $sql=$context->prefix.$context->table;
@@ -52,6 +71,12 @@ class OrmSqlBuild{
         return $sql;
     }
 
+    /**
+     * convertJoin
+     * @param $joinType
+     * @param $option
+     * @param $context
+     */
     private static function convertJoin($joinType,$option,$context){
 
         if($joinType=="inner"){
@@ -110,14 +135,27 @@ class OrmSqlBuild{
         return $sql;
     }
 
+    /**
+     * convertWhere
+     * @param $option
+     */
     public static function convertWhere($option){
         return self::convertWhereHaving("where",$option);
     }
 
+    /**
+     * convertHaving
+     * @param $option
+     */
     public static function convertHaving($option){
         return self::convertWhereHaving("having",$option);
     }
-    
+
+    /**
+     * convertWhereHaving
+     * @param $type
+     * @param $option
+     */
     public static function convertWhereHaving($type, $option){
 
         $sql="";
@@ -198,6 +236,10 @@ class OrmSqlBuild{
 
     }
 
+    /**
+     * convertOrderBy
+     * @param $option
+     */
     public static function convertOrderBy($option){
 
         $sql="";
@@ -222,7 +264,10 @@ class OrmSqlBuild{
         return $sql;
     }
 
-    
+    /**
+     * convertLimit
+     * @param $option
+     */
     public static function convertLimit($option){
 
         $sql="";
@@ -243,6 +288,10 @@ class OrmSqlBuild{
         return $sql;
     }
 
+    /**
+     * convertInsert
+     * @param $option
+     */
     public static function convertInsert($option){
 
         $ind=0;
@@ -286,6 +335,10 @@ class OrmSqlBuild{
 
     }
 
+    /**
+     * convertUpdate
+     * @param $option
+     */
     public static function convertUpdate($option){
 
         $ind=0;
@@ -323,6 +376,11 @@ class OrmSqlBuild{
 
     }
 
+    /**
+     * convertDelete
+     * @param $context
+     * @param $option
+     */
     public static function convertDelete($context,$option){
 
         $sql="DELETE FROM ".$context->prefix.$context->table;
@@ -330,6 +388,11 @@ class OrmSqlBuild{
         return $sql;
     }
 
+    /**
+     * convertCreateDatabase
+     * @param $database
+     * @param $option
+     */
     public static function convertCreateDatabase($database,$option){
 
         $sql="CREATE DATABASE";
@@ -350,6 +413,11 @@ class OrmSqlBuild{
         return $sql;
     }
 
+    /**
+     * convertCreateTable
+     * @param $tableName
+     * @param $tableOption
+     */
     public static function convertCreateTable($tableName,$tableOption){
 
         $sql="CREATE TABLE";
@@ -382,6 +450,10 @@ class OrmSqlBuild{
         return $sql;
     }
 
+    /**
+     * convertCreateTableField
+     * @param $params
+     */
     private static function convertCreateTableField($params){
         
         $sql="\n";
@@ -442,6 +514,11 @@ class OrmSqlBuild{
         return $sql."\n";
     }
 
+    /**
+     * convertCreateView
+     * @param $viewName
+     * @param $viewSql
+     */
     public static function convertCreateView($viewName,$viewSql){
 
         $sql="CREATE VIEW";
@@ -456,6 +533,11 @@ class OrmSqlBuild{
 
     }
 
+    /**
+     * convertDropTable
+     * @param $tableName
+     * @param $option
+     */
     public static function convertDropTable($tableName,$option){
 
         $sql="DROP TABLE";
@@ -469,7 +551,12 @@ class OrmSqlBuild{
         return $sql;
 
     }
-
+    
+    /**
+     * convertDropView
+     * @param $viewName
+     * @param $option
+     */
     public static function convertDropView($viewName,$option){
 
         $sql="DROP View";
@@ -484,6 +571,10 @@ class OrmSqlBuild{
 
     }
 
+    /**
+     * convertGetField
+     * @param $context
+     */
     public static function convertGetField($context){
 
         $tableName=$context->prefix.$context->table;
@@ -499,6 +590,10 @@ class OrmSqlBuild{
         
     }
 
+    /**
+     * convertGetIndex
+     * @param $context
+     */
     public static function convertGetIndex($context){
 
         $tableName=$context->prefix.$context->table;
@@ -514,26 +609,46 @@ class OrmSqlBuild{
 
     }
 
+    /**
+     * convertGetDatabases
+     * @param $context
+     */
     public static function convertGetDatabases($context){
         $sql="SHOW DATABASES";
         return $sql;   
     }
 
+    /**
+     * convertGetTables
+     * @param $context
+     */
     public static function convertGetTables($context){
 		$sql="SHOW TABLES;";
         return $sql;   
     }
 
+    /**
+     * convertGetVariables
+     * @param $context
+     */
     public static function convertGetVariables($context){
 		$sql="SHOW VARIABLES;";
         return $sql;
     }
 
+    /**
+     * convertGetProcessList
+     * @param $context
+     */
     public static function convertGetProcessList($context){
         $sql="SHOW PROCESSLIST;";
         return $sql;
     }
 
+    /**
+     * escape
+     * @param $value
+     */
     private static function escape($value){
 		$value=str_replace("\\","\\\\",$value);
 		$value=str_replace("'","\\'",$value);

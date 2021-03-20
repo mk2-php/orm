@@ -1,5 +1,15 @@
 <?php
 
+/**
+ * 
+ * Mk2 OR - Mapping(ORM)
+ * 
+ * OrmSelectResponse Class
+ * 
+ * Copylight : Nakajima Satoru.
+ * 
+ */
+
 namespace Mk2\Orm;
 
 class OrmSelectResponse{
@@ -48,16 +58,43 @@ class OrmSelectResponse{
 		$this->saveSql=$sql;
 	}
 
+	/**
+     * row
+     */
 	public function row(){
 		return $this->item;
 	}
 
+	/**
+     * item
+     */
+	public function item(){
+		return $this->item;
+	}
+
+	/**
+     * get
+	 * @param $name
+     */
 	public function get($name){
 		if(!empty($this->item->{$name})){
 			return $this->item->{$name};
 		}
 	}
 
+	/**
+     * value
+	 * @param $name
+     */
+	public function value($name){
+		if(!empty($this->item->{$name})){
+			return $this->item->{$name};
+		}
+	}
+
+	/**
+     * toArray
+     */
 	public function toArray(){
 
 		$result=(array)$this->item;
@@ -71,18 +108,30 @@ class OrmSelectResponse{
 		return (array)$result;
 	}
 
+	/**
+     * toSql
+     */
 	public function toSql(){
 		return $this->sql;
 	}
 
+	/**
+     * toBindSql
+     */
 	public function toBindSql(){
 		return $this->bindSql;
 	}
 
+	/**
+     * toSaveSql
+     */
 	public function toSaveSql(){
 		return $this->saveSql;
 	}
-
+	
+	/**
+     * toPaginate
+     */
 	public function toPaginate(){
 		return $this->paging;
 	}

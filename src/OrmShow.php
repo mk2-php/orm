@@ -1,5 +1,15 @@
 <?php
 
+/**
+ * 
+ * Mk2 OR - Mapping(ORM)
+ * 
+ * OrmShow Class
+ * 
+ * Copylight : Nakajima Satoru.
+ * 
+ */
+
 namespace Mk2\Orm;
 
 use PDO;

@@ -1,5 +1,15 @@
 <?php
 
+/**
+ * 
+ * Mk2 OR - Mapping(ORM)
+ * 
+ * OrmSave Class
+ * 
+ * Copylight : Nakajima Satoru.
+ * 
+ */
+
 namespace Mk2\Orm;
 
 class OrmSave extends OrmBase{
@@ -7,6 +17,10 @@ class OrmSave extends OrmBase{
     private const MODE_INSERT=0;
     private const MODE_UPDATE=1;
 
+    /**
+     * values
+     * @param $data
+     */
     public function values($data){
 
         if(empty($this->params["option"])){
@@ -21,7 +35,13 @@ class OrmSave extends OrmBase{
         return $this;
     }
 
-    public function where($field,$operand,$value){
+    /**
+     * where
+     * @param $field
+     * @param $operand
+     * @param $value
+     */
+    public function where($field, $operand, $value){
 
         if(empty($this->params["option"])){
             $this->params["option"]=[];
@@ -39,7 +59,13 @@ class OrmSave extends OrmBase{
         return $this;
     }
 
-    public function auto($data,$responsed=false,$changeOnlyRewrite=false){
+    /**
+     * auto
+     * @param $data
+     * @param $responsed = false
+     * @param $changeOnlyRewrite = false
+     */
+    public function auto($data, $responsed = false, $changeOnlyRewrite=false){
 
         if(!empty($this->context->surrogateKey["enable"])){
             
@@ -59,7 +85,12 @@ class OrmSave extends OrmBase{
         
     }
 
-    public function insert($data=null,$insertResponsed=false){
+    /**
+     * insert
+     * @param $data = null
+     * @param $insertResponsed = false
+     */
+    public function insert($data = null, $insertResponsed = false){
 
         $data2=$this->context->getCallback("saveBefore",[self::MODE_INSERT,$data]);
         if($data2){
@@ -106,11 +137,19 @@ class OrmSave extends OrmBase{
         return $response;
     }
 
+    /**
+     * insertSql
+     * @param $data
+     */
     public function insertSql($data){
         list($sql)=$this->_insertSql($data);
         return $sql;
     }
 
+    /**
+     * _insertSql
+     * @param $data = null
+     */
     private function _insertSql($data=null){
 
         $data=$this->_setCreateColum($data);
@@ -157,7 +196,13 @@ class OrmSave extends OrmBase{
         return [$sql,$data];
     }
 
-    public function update($data=null,$updateResponsed=false,$changeOnlyRewrite=false){
+    /**
+     * update
+     * @param $data = null
+     * @param $updateResponsed = false
+     * @param $changeOnlyRewrite = false
+     */
+    public function update($data = null, $updateResponsed = false, $changeOnlyRewrite = false){
 
         $data2=$this->context->getCallback("saveBefore",[self::MODE_UPDATE,$data]);
         if($data2){
@@ -204,12 +249,23 @@ class OrmSave extends OrmBase{
         return $response;
     }
 
-    public function updateSql($data=null,$changeOnlyRewrite=false){
+    /**
+     * updateSql
+     * @param $data = null
+     * @param $changeOnlyRewrite = false
+     */
+    public function updateSql($data = null, $changeOnlyRewrite = false){
         list($sql)=$this->_updateSql($data,$changeOnlyRewrite);
         return $sql;
     }
 
-    private function _updateSql($data=null,$updateResponsed=false,$changeOnlyRewrite=false){
+    /**
+     * _updateSql
+     * @param $data = null
+     * @param $updateResponsed = false
+     * @param $changeOnlyRewrite = false
+     */
+    private function _updateSql($data = null, $updateResponsed = false, $changeOnlyRewrite = false){
 
         $data=$this->_setUpdateColum($data);
 
@@ -287,6 +343,10 @@ class OrmSave extends OrmBase{
         return [$sql,$updateKeyValue,$data];
     }
 
+    /**
+     * _setCreateColum
+     * @param $data
+     */
     private function _setCreateColum($data){
 
         if(!empty($this->context->timeStamp["create"])){
@@ -306,6 +366,11 @@ class OrmSave extends OrmBase{
 
         return $data;
     }
+    
+    /**
+     * _setUpdateColum
+     * @param $data
+     */
     private function _setUpdateColum($data){
 
         if(!empty($this->context->timeStamp["update"])){

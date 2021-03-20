@@ -6,7 +6,7 @@
 	"authors": [{
 		"name": "Nakajima Satoru"
 	}],
-	"keywords": ["PHP","Framework","mark2"],
+	"keywords": ["PHP","Framework","mark2","OR-mapping"],
 	"require": {
 		"php": ">=5.4.0"
 	},

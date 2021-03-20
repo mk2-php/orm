@@ -29,14 +29,26 @@ class Orm{
     
     public function __construct($option=null){}
 
+    /**
+     * setContext
+     * @param $context
+     */
     public function setContext($context){
         $this->context=$context;
     }
 
+    /**
+     * setConnection
+     * @param $dbConnection
+     */
     public function setConnection($dbConnection){
         $this->connection=$dbConnection;
     }
 
+    /**
+     * getConnection
+     * @param $name = null
+     */
     public function getConnection($name=null){
         if($name){
             if(!empty($this->connection[$name])){
@@ -46,7 +58,9 @@ class Orm{
         return $this->connection;
     }
 
-    
+    /**
+     * connectStart
+     */
     public function connectStart(){
 
         if(empty($this->_pdo)){
@@ -68,14 +82,23 @@ class Orm{
         return true;
     }
 
+    /**
+     * sqlLog
+     */
     public function sqlLog(){
         return OrmLog::get();
     }
 
+    /**
+     * getPdo
+     */
     public function getPdo(){
         return $this->_pdo;
     }
-
+    
+    /**
+     * connectCheck
+     */
     public function connectCheck(){
 
         try{
@@ -88,6 +111,9 @@ class Orm{
         }
     }
 
+    /**
+     * tableExists
+     */
     public function tableExists(){
 
         try{
@@ -105,12 +131,21 @@ class Orm{
         }
     }
 
-    public function query($sql){
+    /**
+     * query
+     * @param $sql
+     * @param $bindValues = null
+     */
+    public function query($sql, $bindValues = null){
 
         $obj=new OrmBase($this);
-        return $obj->query($sql);
+        return $obj->query($sql, $bindValues);
     }
 
+    /**
+     * select
+     * @param $option = null
+     */
     public function select($option=null){
 
         $this->connectStart();
@@ -123,7 +158,11 @@ class Orm{
 
         return $obj;
     }
-    
+
+    /**
+     * show
+     * @param $option = null
+     */
     public function show($option=null){
         
         $this->connectStart();
@@ -225,36 +264,54 @@ class Orm{
         return $obj;
     }
 
-    public function hasMany($name,$object=null){
+    /**
+     * hasMany
+     * @param $name
+     * @param $object = null
+     */
+    public function hasMany($name, $object=null){
 
         if(empty($this->associated['hasMany'])){
             $this->associated['hasMany']=[];
         }
 
         $this->associated['hasMany'][$name]=$object;
-
     }
 
-    public function hasOne($name,$object=null){
+    /**
+     * hasMany
+     * @param $name
+     * @param $object = null
+     */
+    public function hasOne($name,$object = null){
 
         if(empty($this->associated['hasOne'])){
             $this->associated['hasOne']=[];
         }
 
         $this->associated['hasOne'][$name]=$object;
-
     }
-    public function belongsTo($name,$object=null){
+
+    /**
+     * belongsTo
+     * @param $name
+     * @param $object = null
+     */
+    public function belongsTo($name,$object = null){
 
         if(empty($this->associated['belongsTo'])){
             $this->associated['belongsTo']=[];
         }
 
         $this->associated['belongsTo'][$name]=$object;
-
     }
 
-    public function getCallback($name,$request=null){
+    /**
+     * belongsTo
+     * @param $name
+     * @param $request = null
+     */
+    public function getCallback($name,$request = null){
         if(method_exists($this->context,$name)){
             if($request){
                 return $this->context->{$name}(...$request);

@@ -1,11 +1,26 @@
 <?php
 
+/**
+ * 
+ * Mk2 OR - Mapping(ORM)
+ * 
+ * OrmConnectionMysql Class
+ * 
+ * Copylight : Nakajima Satoru.
+ * 
+ */
+
 namespace Mk2\Orm;
 
 use PDO;
 
 class OrmConnectionMysql{
 
+	/**
+	 * connect
+	 * @param $context
+	 * @param $dbDat
+	 */
 	public static function connect($context,$dbData){
 
 		$host="127.0.0.1";

@@ -1,5 +1,15 @@
 <?php
 
+/**
+ * 
+ * Mk2 OR - Mapping(ORM)
+ * 
+ * OrmMigration Class
+ * 
+ * Copylight : Nakajima Satoru.
+ * 
+ */
+
 namespace Mk2\Orm;
 
 class OrmMigration extends OrmBase{
@@ -48,8 +58,14 @@ class OrmMigration extends OrmBase{
         return $this;
     }
 
+    /**
+     * alterTable
+     * @param string $tableName
+     * @param array $fields = null
+     */
     public function alterTable($tableName,$fields){
 
+        // commming soon....!
 
     }
 

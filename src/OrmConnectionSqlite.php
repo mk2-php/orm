@@ -1,11 +1,26 @@
 <?php
 
+/**
+ * 
+ * Mk2 OR - Mapping(ORM)
+ * 
+ * OrmConnectionSqlite Class
+ * 
+ * Copylight : Nakajima Satoru.
+ * 
+ */
+
 namespace Mk2\Orm;
 
 use PDO;
 
 class OrmConnectionSqlite{
 
+	/**
+	 * connect
+	 * @param $context
+	 * @param $dbData
+	 */
 	public static function connect($context,$dbData){
 	
 		$database="";
