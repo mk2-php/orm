@@ -161,9 +161,21 @@ class OrmSqlBuild{
         $sql="";
         $ind=0;
 
+        $nowIndex=0;
+
         if(is_array($option)){
             foreach($option as $o_){
                 if($o_["command"]==$type){
+
+                    if($nowIndex!=$o_["index"]){
+                        if($nowIndex<$o_["index"]){
+                            $sql.="( ";
+                        }
+                        else{
+                            $sql.=" )";
+                        }
+                    }
+                    $nowIndex=$o_["index"];
 
                     if($ind){
                         $operand="AND";

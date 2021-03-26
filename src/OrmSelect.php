@@ -154,8 +154,9 @@ class OrmSelect extends OrmBase{
      * @param $operand
      * @param $value
      * @param $conditions = null
+     * @param $index = 0
      */
-    public function where($field,$operand,$value,$conditions = null){
+    public function where($field,$operand,$value,$conditions = null,$index = 0){
 
         $this->_addCommand([
             "command"=>"where",
@@ -163,6 +164,28 @@ class OrmSelect extends OrmBase{
             "operand"=>$operand,
             "value"=>$value,
             "conditions"=>$conditions,
+            "index"=>$index,
+        ]);
+
+        return $this;
+    }
+
+    /**
+     * whereAnd
+     * @param $field
+     * @param $operand
+     * @param $value
+     * @param $index = 0
+     */
+    public function whereAnd($field,$operand,$value,$index = 0){
+
+        $this->_addCommand([
+            "command"=>"where",
+            "field"=>$field,
+            "operand"=>$operand,
+            "value"=>$value,
+            "conditions"=>"AND",
+            "index"=>$index,
         ]);
 
         return $this;
@@ -173,8 +196,9 @@ class OrmSelect extends OrmBase{
      * @param $field
      * @param $operand
      * @param $value
+     * @param $index = 0
      */
-    public function whereOr($field,$operand,$value){
+    public function whereOr($field,$operand,$value,$index = 0){
 
         $this->_addCommand([
             "command"=>"where",
@@ -182,6 +206,7 @@ class OrmSelect extends OrmBase{
             "operand"=>$operand,
             "value"=>$value,
             "conditions"=>"OR",
+            "index"=>$index,
         ]);
 
         return $this;
@@ -193,8 +218,9 @@ class OrmSelect extends OrmBase{
      * @param $operand
      * @param $value
      * @param $conditions = null
+     * @param $index = 0
      */
-    public function having($field,$operand,$value,$conditions=null){
+    public function having($field,$operand,$value,$conditions=null ,$index = 0){
 
         $this->_addCommand([
             "command"=>"having",
@@ -202,18 +228,42 @@ class OrmSelect extends OrmBase{
             "operand"=>$operand,
             "value"=>$value,
             "conditions"=>$conditions,
+            "index"=>$index,
         ]);
 
         return $this;
     }
 
     /**
-     * havingOR
+     * havingAnd
      * @param $field
      * @param $operand
      * @param $value
+     * @param $index = 0
      */
-    public function havingOR($field,$operand,$value){
+    public function havingAnd($field,$operand,$value, $index = 0){
+
+        $this->_addCommand([
+            "command"=>"having",
+            "field"=>$field,
+            "operand"=>$operand,
+            "value"=>$value,
+            "conditions"=>"AND",
+            "index"=>$index,
+        ]);
+
+        return $this;
+
+    }
+
+    /**
+     * havingOr
+     * @param $field
+     * @param $operand
+     * @param $value
+     * @param $index = 0
+     */
+    public function havingOr($field,$operand,$value, $index = 0){
 
         $this->_addCommand([
             "command"=>"having",
@@ -221,6 +271,7 @@ class OrmSelect extends OrmBase{
             "operand"=>$operand,
             "value"=>$value,
             "conditions"=>"OR",
+            "index"=>$index,
         ]);
 
         return $this;
