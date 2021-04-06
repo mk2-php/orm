@@ -40,8 +40,10 @@ class OrmSave extends OrmBase{
      * @param $field
      * @param $operand
      * @param $value
+     * @param $conditions = null
+     * @param $index = 0
      */
-    public function where($field, $operand, $value){
+    public function where($field, $operand, $value, $conditions = null,$index = 0){
 
         if(empty($this->params["option"])){
             $this->params["option"]=[];
@@ -52,6 +54,8 @@ class OrmSave extends OrmBase{
             "field"=>$field,
             "operand"=>$operand,
             "value"=>$value,
+            "conditions"=>$conditions,
+            "index"=>$index,
         ];
 
         $this->params["option"][]=$buff;
