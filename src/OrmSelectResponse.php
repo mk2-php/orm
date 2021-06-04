@@ -62,14 +62,18 @@ class OrmSelectResponse{
      * row
      */
 	public function row(){
-		return $this->item;
+		if($this->item){
+			return $this->item;
+		}
 	}
 
 	/**
      * item
      */
 	public function item(){
-		return $this->item;
+		if($this->item){
+			return $this->item;
+		}
 	}
 
 	/**
