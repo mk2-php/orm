@@ -240,17 +240,26 @@ class Orm{
      * @param $params
      * @param $revertResponsed = false
      */
-    public function revert($params,$revertResponsed=false){
+    public function revert($params,$revertResponsed = false){
 
         $this->connectStart();
 
         $obj=new OrmDelete($this);
 
-        if($params){
-            return $obj->surrogateSelect($params)->revert($revertResponsed);
-        }
+        return $obj->surrogateSelect($params)->revert($revertResponsed);
+    }
 
-        return $obj;
+    /**
+     * physicalDelete
+     * @param $revertResponsed = false
+     */
+    public function physicalDelete($physicalDeleteResponsed = false){
+
+        $this->connectStart();
+
+        $obj=new OrmDelete($this);
+
+        return $obj->physicalDelete($physicalDeleteResponsed);
     }
 
     /**
