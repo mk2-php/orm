@@ -740,6 +740,7 @@ class OrmSelect extends OrmBase{
     public function paginate($limit,$page){
         
         $paramsBuff=$this->params;
+        $this->continue(true);
         $getTotalCount=$this->count();
 
         $this->params=$paramsBuff;
@@ -758,6 +759,8 @@ class OrmSelect extends OrmBase{
             "sql"=>$buff->toSql(),
             "paging"=>$paging,
         ]);
+
+        $this->continue(false);
 
         return $response;
 
