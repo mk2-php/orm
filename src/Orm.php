@@ -236,6 +236,24 @@ class Orm{
     }
 
     /**
+     * revert
+     * @param $params
+     * @param $revertResponsed = false
+     */
+    public function revert($params,$revertResponsed=false){
+
+        $this->connectStart();
+
+        $obj=new OrmDelete($this);
+
+        if($params){
+            return $obj->surrogateSelect($params)->revert($revertResponsed);
+        }
+
+        return $obj;
+    }
+
+    /**
      * transaction
      * @param $params = null
      */
