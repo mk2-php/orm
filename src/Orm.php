@@ -138,6 +138,8 @@ class Orm{
      */
     public function query($sql, $bindValues = null){
 
+        $this->connectStart();
+        
         $obj=new OrmBase($this);
         return $obj->query($sql, $bindValues);
     }
