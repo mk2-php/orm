@@ -426,6 +426,17 @@ class OrmSqlBuild{
     }
 
     /**
+     * convertUseDatabase
+     * @param $databaseName
+     */
+    public static function convertUseDatabase($databaseName){
+
+        $sql="USE ".$databaseName;
+
+        return $sql;
+    }
+
+    /**
      * convertCreateTable
      * @param $tableName
      * @param $tableOption

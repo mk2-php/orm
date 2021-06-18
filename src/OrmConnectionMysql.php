@@ -77,10 +77,12 @@ class OrmConnectionMysql{
 	
 		$makePdo=new PDO($pdoStr,$username,$password);
 	
-		if(is_array($options)){
-			foreach($options as $field=>$value){
-				$makePdo->setAttribute($field,$value);
-			}
+		if(!empty($options)){
+			if(is_array($options)){
+				foreach($options as $field=>$value){
+					$makePdo->setAttribute($field,$value);
+				}
+			}	
 		}
 	
 		return $makePdo;

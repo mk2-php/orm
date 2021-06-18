@@ -31,6 +31,20 @@ class OrmMigration extends OrmBase{
     }
 
     /**
+     * useDatabase
+     * @param $databaseName
+     */
+    public function useDatabase($databaseName){
+
+        $sql=OrmSqlBuild::convertUseDatabase($databaseName);
+
+        $this->sqls[]=$sql;
+
+        return $this;
+
+    }
+
+    /**
      * createTable
      * @param string $tableName
      * @param array $tableOption = null
