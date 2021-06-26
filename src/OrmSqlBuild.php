@@ -438,10 +438,11 @@ class OrmSqlBuild{
 
     /**
      * convertCreateTable
+     * @param $context
      * @param $tableName
      * @param $tableOption
      */
-    public static function convertCreateTable($tableName,$tableOption){
+    public static function convertCreateTable($context,$tableName,$tableOption){
 
         $sql="CREATE TABLE";
         
@@ -449,7 +450,7 @@ class OrmSqlBuild{
             $sql.=" IF NOT EXISTS";
         }
         
-        $sql.=" ".$tableName;
+        $sql.=" ".$context->prefix.$tableName;
 
         if(!empty($tableOption["fields"])){
             $sql.=" (".self::convertCreateTableField($tableOption["fields"]).") ";
@@ -539,10 +540,11 @@ class OrmSqlBuild{
 
     /**
      * convertCreateView
+     * @param $context
      * @param $viewName
      * @param $viewSql
      */
-    public static function convertCreateView($viewName,$viewSql){
+    public static function convertCreateView($context,$viewName,$viewSql){
 
         $sql="CREATE VIEW";
         
@@ -550,7 +552,7 @@ class OrmSqlBuild{
             $sql.=" IF NOT EXISTS";
         }
 
-        $sql.=" ".$viewName." AS \n ".$viewSql;
+        $sql.=" ".$context->prefix.$viewName." AS \n ".$viewSql;
 
         return $sql;
 
@@ -558,10 +560,11 @@ class OrmSqlBuild{
 
     /**
      * convertDropTable
+     * @param $context
      * @param $tableName
      * @param $option
      */
-    public static function convertDropTable($tableName,$option){
+    public static function convertDropTable($context,$tableName,$option){
 
         $sql="DROP TABLE";
 
@@ -569,7 +572,7 @@ class OrmSqlBuild{
             $sql.=" IF EXISTS";
         }
 
-        $sql.=" ".$tableName;
+        $sql.=" ".$context->prefix.$tableName;
 
         return $sql;
 
@@ -577,10 +580,11 @@ class OrmSqlBuild{
     
     /**
      * convertDropView
+     * @param $context
      * @param $viewName
      * @param $option
      */
-    public static function convertDropView($viewName,$option){
+    public static function convertDropView($context,$viewName,$option){
 
         $sql="DROP View";
 
@@ -588,7 +592,7 @@ class OrmSqlBuild{
             $sql.=" IF EXISTS";
         }
 
-        $sql.=" ".$viewName;
+        $sql.=" ".$context->prefix.$viewName;
 
         return $sql;
 

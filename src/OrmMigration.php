@@ -51,7 +51,7 @@ class OrmMigration extends OrmBase{
      */
     public function createTable($tableName,$tableOption=null){
 
-        $sql=OrmSqlBuild::convertCreateTable($tableName,$tableOption);
+        $sql=OrmSqlBuild::convertCreateTable($this->context,$tableName,$tableOption);
 
         $this->sqls[]=$sql;
 
@@ -65,7 +65,7 @@ class OrmMigration extends OrmBase{
      */
     public function createView($viewName,$viewSql){
 
-        $sql=OrmSqlBuild::convertCreateView($viewName,$viewSql);
+        $sql=OrmSqlBuild::convertCreateView($this->context,$viewName,$viewSql);
 
         $this->sqls[]=$sql;
 
@@ -90,7 +90,7 @@ class OrmMigration extends OrmBase{
      */
     public function dropTable($tableName,$option=null){
 
-        $sql=OrmSqlBuild::convertDropTable($tableName,$option);
+        $sql=OrmSqlBuild::convertDropTable($this->context,$tableName,$option);
 
         $this->sqls[]=$sql;
 
@@ -105,7 +105,7 @@ class OrmMigration extends OrmBase{
      */
     public function dropView($viewName,$option=null){
 
-        $sql=OrmSqlBuild::convertDropView($viewName,$option);
+        $sql=OrmSqlBuild::convertDropView($this->context,$viewName,$option);
 
         $this->sqls[]=$sql;
 
