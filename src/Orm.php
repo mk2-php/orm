@@ -1,11 +1,20 @@
 <?php
 
 /**
+ * ===================================================
  * 
- * Mk2 OR - Mapping(ORM)
+ * PHP Framework "Mk2" - Mk2-ORM
+ *
+ * Orm
  * 
- * Copylight : Nakajima Satoru.
+ * Or mapping base class.
  * 
+ * URL : https://www.mk2-php.com/
+ * 
+ * Copylight : Nakajima-Satoru 2021.
+ *           : Sakaguchiya Co. Ltd. (https://www.teastalk.jp/)
+ * 
+ * ===================================================
  */
 
 namespace Mk2\Orm;
@@ -27,6 +36,9 @@ class Orm{
     private const TYPE_UPDATE="update";
     private const TYPE_DELETE="delete";
     
+    /**
+     * __construct
+     */
     public function __construct($option=null){}
 
     /**
