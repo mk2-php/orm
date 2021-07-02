@@ -480,12 +480,105 @@ class OrmSqlBuild{
     }
 
     /**
+     * convertAlterTable
+     * @param $context
+     * @param $mode
+     * @param $tableName
+     */
+    public static function convertAlterTable($context,$tableName,$mode,$option){
+
+        $sql="ALTER TABLE";
+
+        $sql.=" ".$context->prefix.$tableName;
+
+        if($mode=="rename"){
+            $sql.="\n RENAME ".$option["table"];
+        }
+        else if($mode=="rename column"){
+            $ind=0;
+            foreach($option["option"] as $before=>$after){
+                if($ind){
+                    $sql.=" , ";
+                }
+                $sql.="\n RENAME COLUMN ".$before." TO ".$after;
+                $ind++;                
+            }
+        }
+        else if($mode=="rename index"){
+            $ind=0;
+            foreach($option["option"] as $before=>$after){
+                if($ind){
+                    $sql.=" , ";
+                }
+                $sql.="\n RENAME INDEX ".$before." TO ".$after;
+                $ind++;                
+            }
+        }
+        else if($mode=="change"){
+            $ind=0;
+            foreach($option["option"] as $beforeColumn=>$o_){
+                if($ind){
+                    $sql.=" , ";
+                }
+                $sql.="\n CHANGE ".$beforeColumn." ".self::convertCreateTableField([
+                    $o_["after"]=>$o_,
+                ],true);
+                $ind++;                
+            }
+        }
+        else if($mode=="modify"){
+            $ind=0;
+            foreach($option["option"] as $beforeColumn=>$o_){
+                if($ind){
+                    $sql.=" , ";
+                }
+                $sql.="\n MODIFY ".$beforeColumn." ".self::convertCreateTableField([
+                    $o_["after"]=>$o_,
+                ],true);
+                $ind++;                
+            }
+        }
+        else if($mode=="add"){
+            $ind=0;
+            foreach($option["option"] as $column=>$o_){
+                if($ind){
+                    $sql.=" , ";
+                }
+                $sql.="\n ADD ".self::convertCreateTableField([
+                    $column=>$o_,
+                ],true);
+                if(!empty($o_["after"])){
+                    $sql.=" AFTER ".$o_["after"];
+                }
+                $ind++;
+            }
+        }
+        else if($mode=="drop"){
+            $ind=0;
+            foreach($option["option"] as $o_){
+                if($ind){
+                    $sql.=" , ";
+                }
+                $sql.="\n DROP ".$o_;
+                $ind++;
+            }
+        }
+
+        return $sql;
+    }
+
+    /**
      * convertCreateTableField
      * @param $params
+     * @param $hiddenNewLine = false
      */
-    private static function convertCreateTableField($params){
+    private static function convertCreateTableField($params,$hiddenNewLine = false){
         
-        $sql="\n";
+        $sql="";
+        if(!$hiddenNewLine){
+            $sql="\n";
+        }
+
         $ind=0;
         foreach($params as $name=>$value){
             if($ind!=0){
@@ -532,7 +625,10 @@ class OrmSqlBuild{
                 $sql.=" COMMENT '".$value["comment"]."'";
             }
 
-            $sql.="\n";
+            if(!$hiddenNewLine){
+                $sql.="\n";
+            }
+
             $ind++;
         }
 
@@ -540,7 +636,11 @@ class OrmSqlBuild{
             $sql.=",PRIMARY KEY(".$primaryKey.")";
         }
 
-        return $sql."\n";
+        if(!$hiddenNewLine){
+            $sql.="\n";
+        }
+
+        return $sql;
     }
 
     /**

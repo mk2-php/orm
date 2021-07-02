@@ -22,6 +22,16 @@ class OrmMigration extends OrmBase{
     protected $sqls=[];
 
     /**
+     * sqlRow
+     * @param $sql
+     */
+    public function sqlRow($sql){
+        
+        $this->sqls[]=$sql;
+        return $this;
+    }
+
+    /**
      * createDatabase
      * @param string $databaseName
      * @param array $option = null
@@ -70,9 +80,9 @@ class OrmMigration extends OrmBase{
      */
     public function createView($viewName,$viewSql){
 
-        $sql=OrmSqlBuild::convertCreateView($this->context,$viewName,$viewSql);
+        $sql = OrmSqlBuild::convertCreateView($this->context,$viewName,$viewSql);
 
-        $this->sqls[]=$sql;
+        $this->sqls[] = $sql;
 
         return $this;
     }
@@ -80,12 +90,116 @@ class OrmMigration extends OrmBase{
     /**
      * alterTable
      * @param string $tableName
-     * @param array $fields = null
+     * @param array $option
      */
-    public function alterTable($tableName,$fields){
+    public function alterTable($tableName,$mode,$option){
 
-        // commming soon....!
+        $sql = OrmSqlBuild::convertAlterTable($this->context,$tableName,$mode,$option);
 
+        $this->sqls[] = $sql;
+        return $this;
+    }
+
+    /**
+     * alterTableRename
+     * @param $tableName
+     * @param $renameTableName
+     */
+    public function alterTableRename($tableName,$renameTableName){
+        
+        $opt=[
+            "table" => $renameTableName,
+        ];
+
+        return $this->alterTable($tableName,"rename",$opt);
+    }
+
+    /**
+     * alterTableRenameColumn
+     * @param $tableName
+     * @param $renameColumnName
+     */
+    public function alterTableRenameColumn($tableName,$columnList){
+
+        $opt=[
+            "option" => $columnList,
+        ];
+
+        return $this->alterTable($tableName,"rename column",$opt);
+    }
+
+    /**
+     * alterTableRenameIndex
+     * @param $tableName
+     * @param $indexList
+     */
+    public function alterTableRenameIndex($tableName,$indexList){
+
+        $opt=[
+            "option" => $indexList,
+        ];
+
+        return $this->alterTable($tableName,"rename index",$opt);
+    }
+
+    /**
+     * alterTableChangeColumn
+     * @param string $tableName
+     * @param array $columnOption
+     */
+    public function alterTableChangeColumn($tableName,$columnOption){
+
+        $opt=[
+            "option" => $columnOption,
+        ];
+
+        return $this->alterTable($tableName,"change",$opt);
+    }
+
+    /**
+     * alterTableAddColumn
+     * @param string $tableName
+     * @param array $columnOption
+     */
+    public function alterTableAddColumn($tableName,$columnOption){
+
+        $opt=[
+            "option" => $columnOption,
+        ];
+
+        return $this->alterTable($tableName,"add",$opt);
+    }
+
+    /**
+     * alterTableModifyColumn
+     * @param string $tableName
+     * @param array $columnOption
+     */
+    public function alterTableModifyColumn($tableName,$columnOption){
+
+        $opt=[
+            "option" => $columnOption,
+        ];
+
+        return $this->alterTable($tableName,"modify",$opt);
+    }
+
+     /**
+     * alterTableDropColumn
+     * @param string $tableName
+     * @param array $columnList
+     */
+    public function alterTableDropColumn($tableName,$columnList){
+
+        if(is_string($columnList)){
+            $columnList = [$columnList];
+        }
+
+        $opt=[
+            "option" => $columnList,
+        ];
+
+        return $this->alterTable($tableName,"drop",$opt);
     }
 
     /**
