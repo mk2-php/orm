@@ -229,7 +229,20 @@ class OrmMigration extends OrmBase{
         $this->sqls[]=$sql;
 
         return $this;
+    }
 
+    /**
+     * insert
+     * @param $tableName
+     * @param $data
+     */
+    public function insert($tableName,$data){
+
+        $sql = OrmSqlBuild::convertInsertMigration($this->context,$tableName,$data);
+
+        $this->sqls[]=$sql;
+
+        return $this;
     }
 
     /**
@@ -244,9 +257,21 @@ class OrmMigration extends OrmBase{
      */
     public function run(){
 
-        foreach($this->sqls as $s_){
-            $this->query($s_);
+        try{
+
+            $this->query("BEGIN");
+
+            foreach($this->sqls as $s_){
+                $this->query($s_);
+            }
+    
+            $this->query("COMMIT");
+
+        }catch(\Exception $e){
+            $this->query("ROLLBACK");
+            throw new \Exception($e);
         }
+
 
     }
 }

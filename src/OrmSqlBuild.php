@@ -353,6 +353,26 @@ class OrmSqlBuild{
     }
 
     /**
+     * convertInsertMigration
+     * @param $context
+     * @param $tableName
+     * @param $data
+     */
+    public static function convertInsertMigration($context,$tableName,$data){
+
+        $list = self::convertInsert([
+            [
+                "command"=>"values",
+                "value"=>$data,    
+            ],
+        ]);
+
+        $sql="INSERT INTO ".$context->prefix.$tableName." (".$list["fields"].") VALUES (".$list["values"].")";
+
+        return $sql;
+    }
+
+    /**
      * convertUpdate
      * @param $option
      */
@@ -451,7 +471,7 @@ class OrmSqlBuild{
 
         $sql="CREATE TABLE";
         
-        if(!empty($option["ifNotExists"])){
+        if(!empty($tableOption["ifNotExists"])){
             $sql.=" IF NOT EXISTS";
         }
         
