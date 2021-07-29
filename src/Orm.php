@@ -362,4 +362,11 @@ class Orm{
             }
         }
     }
+
+    /**
+     * getForeignKey
+     */
+    public function getForeignKey(){
+        return $this->context->foreignKey;
+    }
 }

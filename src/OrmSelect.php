@@ -818,6 +818,10 @@ class OrmSelect extends OrmBase{
         $bindSql=[];
         foreach($this->context->associated['hasMany'] as $className=>$object){
 
+            if(!empty($object->getForeignKey())){
+                $foreignKey = $object->getForeignKey();
+            }
+            
             $o_=$object->select($object);
 
             $o_=$o_
@@ -849,13 +853,11 @@ class OrmSelect extends OrmBase{
                             $rows[$index]->{$className}=$bb_;
                         }
                     }
-
                 }
             }
-
         }
         else if($type==self::OUTPUT_FIRST){
-
+            $rows->{$className} = $buffer[$className][$suIdList[0]];
         }
 
         $responseOut=new OrmSelectResponse([
@@ -902,6 +904,10 @@ class OrmSelect extends OrmBase{
         $bindSql=[];
         foreach($this->context->associated['hasOne'] as $className=>$object){
 
+            if(!empty($object->getForeignKey())){
+                $foreignKey = $object->getForeignKey();
+            }
+            
             $o_=$object->select($object);
 
             $o_=$o_
@@ -938,7 +944,7 @@ class OrmSelect extends OrmBase{
 
         }
         else if($type==self::OUTPUT_FIRST){
-
+            $rows->{$className} = $buffer[$className][$suIdList[0]];
         }
 
         $responseOut=new OrmSelectResponse([
