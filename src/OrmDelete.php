@@ -75,14 +75,15 @@ class OrmDelete extends OrmBase{
     }
 
     /**
-     * where
+     * delete
      * @param boolean $deleteResponsed = false
+     * @param boolean $directDelete = false
      */
-    public function delete($deleteResponsed=false){
+    public function delete($deleteResponsed = false,$directDelete = false){
 
         $this->context->getCallback("deleteBefore");
 
-        list($sql,$deleteKeyValue)=$this->_sql($deleteResponsed);
+        list($sql,$deleteKeyValue)=$this->_sql($deleteResponsed,$directDelete);
 
         if($deleteResponsed){
 
@@ -164,38 +165,46 @@ class OrmDelete extends OrmBase{
      * _sql
      * @param boolean $deleteResponsed
      */
-    private function _sql($deleteResponsed){
+    private function _sql($deleteResponsed,$directDelete = false){
 
         $opt=$this->params["option"];
 
         $wheres=OrmSqlBuild::convertWhere($opt);
+
         if(!empty($this->context->logicalDelete)){
 
-            $logicalDeleteField=self::DELETE_FLG;
-            if(!empty($this->context->logicalDelete["field"])){
-                $logicalDeleteField=$this->context->logicalDelete["field"];
-            }
+            if(!$directDelete){
 
-            $stampType=1;
-            if(!empty($this->context->logicalDelete["stampType"])){
-                $stampType=$this->context->logicalDelete["stampType"];
-            }
+                $logicalDeleteField=self::DELETE_FLG;
+                if(!empty($this->context->logicalDelete["field"])){
+                    $logicalDeleteField=$this->context->logicalDelete["field"];
+                }
+    
+                $stampType=1;
+                if(!empty($this->context->logicalDelete["stampType"])){
+                    $stampType=$this->context->logicalDelete["stampType"];
+                }
+    
+                if($stampType=="date"){
+                    $deleteStamp=date_format(date_create("now"),"Y-m-d H:i:s");
+                }
+                else if($stampType==1){
+                    $deleteStamp=1;
+                }
+                else{
+                    $deleteStamp=$stampType;
+                }                
+    
+                $updateObj=new OrmSave($this->context);
+    
+                $sql=$updateObj->updateSql([
+                    $logicalDeleteField=>$deleteStamp,
+                ]);
 
-            if($stampType=="date"){
-                $deleteStamp=date_format(date_create("now"),"Y-m-d H:i:s");
-            }
-            else if($stampType==1){
-                $deleteStamp=1;
             }
             else{
-                $deleteStamp=$stampType;
-            }                
-
-            $updateObj=new OrmSave($this->context);
-
-            $sql=$updateObj->updateSql([
-                $logicalDeleteField=>$deleteStamp,
-            ]);
+                $sql=OrmSqlBuild::convertDelete($this->context,$opt);
+            }
 
         }
         else{

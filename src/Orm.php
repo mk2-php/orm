@@ -235,15 +235,16 @@ class Orm{
      * delete
      * @param $params
      * @param $deleteResponsed = false
+     * @param $directDelete = false
      */
-    public function delete($params,$deleteResponsed=false){
+    public function delete($params,$deleteResponsed = false,$directDelete = false){
         
         $this->connectStart();
 
         $obj=new OrmDelete($this);
 
         if($params){
-            return $obj->surrogateSelect($params)->delete($deleteResponsed);
+            return $obj->surrogateSelect($params)->delete($deleteResponsed,$directDelete);
         }
 
         return $obj;        

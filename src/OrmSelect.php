@@ -981,15 +981,19 @@ class OrmSelect extends OrmBase{
             }
 
             $foreignKey=$object->prefix.$object->table.'_'.$object->surrogateKey['field'];
+            if(!empty($object->getForeignKey())){
+                $foreignKey = $object->getForeignKey();
+            }
             $surrogateKey=$object->surrogateKey['field'];
-
             if($type==self::OUTPUT_ALL){
-                foreach($rows as $r_){
-                    if(!empty($r_->{$foreignKey})){
-                        $suIdList[]=$r_->{$foreignKey};
-                    }
-                }            
-                $suIdList=array_unique($suIdList);
+                if($rows){
+                    foreach($rows as $r_){
+                        if(!empty($r_->{$foreignKey})){
+                            $suIdList[]=$r_->{$foreignKey};
+                        }
+                    }            
+                    $suIdList=array_unique($suIdList);    
+                }
             }
             else if($type==self::OUTPUT_FIRST){
                 if(!empty($rows->{$foreignKey})){
@@ -1020,17 +1024,18 @@ class OrmSelect extends OrmBase{
         }
 
         if($type==self::OUTPUT_ALL){
-            foreach($rows as $index=>$r_){
-                foreach($buffer as $className=>$b_){
-                    foreach($b_ as $target=>$bb_){
-                        if($target==$r_->{$foreignKey}){
-                            $rows[$index]->{$className}=$bb_;
+            if($rows){
+                foreach($rows as $index=>$r_){
+                    foreach($buffer as $className=>$b_){
+                        foreach($b_ as $target=>$bb_){
+                            if($target==$r_->{$foreignKey}){
+                                $rows[$index]->{$className}=$bb_;
+                            }
                         }
+    
                     }
-
-                }
+                }    
             }
-
         }
         else if($type==self::OUTPUT_FIRST){
 

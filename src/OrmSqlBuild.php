@@ -228,7 +228,10 @@ class OrmSqlBuild{
                         }
                     }
                     else{
-                        if($value===""){
+                        if(is_array($value)){
+                            continue;
+                        }
+                        else if($value===""){
                             $value="``";
                         }
                         else if($value===0){
